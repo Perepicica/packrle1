@@ -137,11 +137,10 @@ public class XXOO {
             if (count > result) result = count;
             y++;
         }
-
+        int[] arrayResult1;
+        arrayResult1 = new int[width - 1];
         for (int l = 0; l < width; l++) { //поиска по побочным диагоналям выше основной побочной диагонали
             for (int i = 0; i <= l; i++) {
-                int[] arrayResult1;
-                arrayResult1 = new int[width - 1];
                 Cell cell = new Cell(x, y);
                 if (move.equals(get(i, l - 1)) && move.equals(get(i + 1, l))) arrayResult1[l] += 1;
                 if (move.equals(get(i, l - 1)) && !move.equals(get(i + 1, l))) {
@@ -150,11 +149,12 @@ public class XXOO {
                 }
                 if (!move.equals(get(i, l - 1)) && move.equals(get(i + 1, l))) arrayResult1[l] = 0;
             }
+            if(result < arrayResult1[l]) result= arrayResult1[l];
         }
+        int[] arrayResult2;
+        arrayResult2 = new int[width - 1];
         for (int l = width; l < 2*width - 1; l++) { //поиска по побочным диагоналям ниже основной побочной диагонали
             for (int j = width - 1; j > l - width; j--) {
-                int[] arrayResult2;
-                arrayResult2 = new int[width - 1];
                 Cell cell = new Cell(x, y);
                 if (move.equals(get(l - j, j)) && move.equals(get(l - j + 1, j - 1))) arrayResult2[l] += 1;
                 if (move.equals(get(l - j, j)) && !move.equals(get(l - j + 1, j - 1))) {
@@ -163,6 +163,7 @@ public class XXOO {
                 }
                 if (!move.equals(get(l - j, j)) && move.equals(get(l - j + 1, j - 1))) arrayResult2[l] = 0;
             }
+            if(result < arrayResult2[l]) result= arrayResult2[l];
         }
 
         return result;
