@@ -12,7 +12,20 @@ public class XXOO {
             if (this == X) return O;
             else return X;
         }
+    }
 
+    private final int width;
+    private final int hight;
+    private final Map<Cell, Move> moves = new HashMap<>();
+    private Move turn = Move.X;
+
+    public XXOO(int width, int hight) {
+        this.width = width;
+        this.hight = hight;
+    }
+
+    public XXOO() {
+        this(3, 3);
     }
 
     private static class Cell {
@@ -41,16 +54,6 @@ public class XXOO {
         }
     }
 
-    private final int width;
-    private final int hight;
-    private final Map<Cell, Move> moves = new HashMap<>();
-    private Move turn = Move.X;
-
-    public XXOO(int width, int hight) {
-        this.width = width;
-        this.hight = hight;
-    }
-
     public Move get(int x, int y) {
         return get(new Cell(x, y));
     }
@@ -59,12 +62,8 @@ public class XXOO {
         return moves.get(cell);
     }
 
-    public Move getMove() {
+    public Move getMove(Move x) {
         return turn;
-    }
-
-    public XXOO() {
-        this(3, 3);
     }
 
     public void makeTurn(int x, int y) {
@@ -95,14 +94,20 @@ public class XXOO {
     public int theLongestLine(Move move) {
         int result = 0;
         int x = 0;
-        while (x < width) {
+        while (x < width) {  //ищу самую длинную последовательность в строчках
             int count = 0;
             for (int y = 0; y < hight - 1; y++) {
                 Cell cell = new Cell(x, y);
                 Cell next = new Cell(x, y + 1);
                 if (move.equals(get(cell)) && move.equals(get(next)))
                     count++;
-
+                if (move.equals(get(cell)) && !move.equals(get(cell))) {
+                    if (count + 1 > result) result = count + 1;
+                    count = 0;
+                }
+                if (!move.equals(get(cell)) && move.equals(get(cell))) {
+                    count = 1;
+                }
             }
             Cell last = new Cell(x, hight - 1);
             if (move.equals(get(last)))
@@ -111,22 +116,55 @@ public class XXOO {
             x++;
         }
         int y = 0;
-        while (y < hight) {
+        while (y < hight) { // ищу самую длинную последовательность в столбцах
             int count = 0;
             for (x = 0; x < width - 1; x++) {
                 Cell cell = new Cell(x, y);
                 Cell next = new Cell(x + 1, y);
                 if (move.equals(get(cell)) && move.equals(get(next)))
                     count++;
-
+                if (move.equals(get(cell)) && !move.equals(get(cell))) {
+                    if (count + 1 > result) result = count + 1;
+                    count = 0;
+                }
+                if (!move.equals(get(cell)) && move.equals(get(cell))) {
+                    count = 0;
+                }
             }
             Cell last = new Cell(width - 1, y);
             if (move.equals(get(last)))
                 count++;
             if (count > result) result = count;
             y++;
-
         }
+
+        for (int l = 0; l < width; l++) { //поиска по побочным диагоналям выше основной побочной диагонали
+            for (int i = 0; i <= l; i++) {
+                int[] arrayResult1;
+                arrayResult1 = new int[width - 1];
+                Cell cell = new Cell(x, y);
+                if (move.equals(get(i, l - 1)) && move.equals(get(i + 1, l))) arrayResult1[l] += 1;
+                if (move.equals(get(i, l - 1)) && !move.equals(get(i + 1, l))) {
+                    if (result < arrayResult1[l] + 1) result = arrayResult1[l] + 1;
+                    arrayResult1[l] = 0;
+                }
+                if (!move.equals(get(i, l - 1)) && move.equals(get(i + 1, l))) arrayResult1[l] = 0;
+            }
+        }
+        for (int l = width; l < 2*width - 1; l++) { //поиска по побочным диагоналям ниже основной побочной диагонали
+            for (int j = width - 1; j > l - width; j--) {
+                int[] arrayResult2;
+                arrayResult2 = new int[width - 1];
+                Cell cell = new Cell(x, y);
+                if (move.equals(get(l - j, j)) && move.equals(get(l - j + 1, j - 1))) arrayResult2[l] += 1;
+                if (move.equals(get(l - j, j)) && !move.equals(get(l - j + 1, j - 1))) {
+                    if (result < arrayResult2[l] + 1) result = arrayResult2[l] + 1;
+                    arrayResult2[l] = 0;
+                }
+                if (!move.equals(get(l - j, j)) && move.equals(get(l - j + 1, j - 1))) arrayResult2[l] = 0;
+            }
+        }
+
         return result;
     }
 }

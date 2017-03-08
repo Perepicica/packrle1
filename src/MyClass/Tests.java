@@ -20,6 +20,8 @@ public class Tests {
         field.makeTurn(0,2);
         field.makeTurn(0,1);
         assertEquals(X,field.get(0,0));
+        assertEquals(2, field.theLongestLine(X));
 
     }
+
 }
