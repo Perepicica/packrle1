@@ -54,7 +54,7 @@ public class XXOO {
         return get(new Cell(x, y));
     }
 
-    private Move get(Cell cell) {
+    public Move get(Cell cell) {
         return moves.get(cell);
     }
 
@@ -64,67 +64,76 @@ public class XXOO {
 
     public void makeTurn(int x, int y) {
         if (x < 0 || x >= width || y < 0 || y >= hight) throw new IllegalArgumentException();
-                Cell cell = new Cell(x, y);
-                moves.put(cell, turn);
-                turn = turn.opposite();
+        Cell cell = new Cell(x, y);
+        moves.put(cell, turn);
+        turn = turn.opposite();
     }
 
 
     public void clearCell(int x, int y) {
         if (x < 0 || x >= width || y < 0 || y >= hight) throw new IllegalArgumentException();
-                Cell cell = new Cell(x, y);
-                if (moves.containsKey(cell)) {
-                    moves.remove(cell, turn);
-                }
-
+        Cell cell = new Cell(x, y);
+        if (moves.containsKey(cell)) {
+            moves.remove(cell, turn);
+        }
     }
 
-
-    public void theLongestLine(Move move) {
+    private void VictoryInRow(Move move) {
         int x = 0;
-        int y = 0;
-        int count;
         int num = 0;
-        while (x < width) {  //ищу самую длинную последовательность в строчках
-            count = 0;
-            for (y = 0; y < hight ; y++) {
+        while (x < width) {
+            int count = 0;
+            for (int y = 0; y < hight; y++) {
                 Cell cell = new Cell(x, y);
                 if (move.equals(get(x, y))) count++;
                 if (count == width) num = x + 1;
             }
-            if (count == width) System.out.println("победа в "+ num +" строке");
+            if (count == width) System.out.println("победа в " + num + " строке");
             x++;
         }
+    }
 
-        y = 0;
-        while (y < hight) { // ищу самую длинную последовательность в столбцах
-            count = 0;
-            for (x = 0; x < width ; x++) {
+    private void VictoryInColumn(Move move) {
+        int y = 0;
+        int num = 0;
+        while (y < hight) {
+            int count = 0;
+            for (int x = 0; x < width; x++) {
                 Cell cell = new Cell(x, y);
                 if (move.equals(get(x, y))) count++;
                 if (count == width) num = y + 1;
             }
-            if (count == width)  System.out.println("победа в " + num + " столбце");
+            if (count == width) System.out.println("победа в " + num + " столбце");
             y++;
         }
+    }
 
-        count = 0; //ищу победу в главной диагонали
-        for (x = 0; x < width; x++) {
-            y = x;
+    private void VictoryinMaInDiagonal(Move move) {
+        int count = 0;
+        for (int x = 0; x < width; x++) {
+            int y = x;
             Cell cell = new Cell(x, y);
             if (move.equals(get(x, y))) count++;
         }
         if (count == width)
             System.out.println("победа по главной диагонали");
+    }
 
-        count = 0; //ищу победу в побочной диагонали
-        for (x = 0; x < width; x++) {
-            y = width - 1 - x;
+    private void VictotyInSecondaryDiagonal(Move move) {
+        int count = 0;
+        for (int x = 0; x < width; x++) {
+            int y = width - 1 - x;
             Cell cell = new Cell(x, y);
             if (move.equals(get(x, y))) count++;
         }
         if (count == width)
             System.out.println("победа по побочной диагонали");
+    }
 
+    public void theLongestLine(Move move) {
+        VictoryInRow(move);
+        VictoryInColumn(move);
+        VictoryinMaInDiagonal(move);
+        VictotyInSecondaryDiagonal(move);
     }
 }
