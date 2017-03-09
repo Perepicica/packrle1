@@ -24,10 +24,6 @@ public class XXOO {
         this.hight = hight;
     }
 
-    public XXOO() {
-        this(3, 3);
-    }
-
     private static class Cell {
         private final int x;
         private final int y;
@@ -165,7 +161,6 @@ public class XXOO {
             }
             if(result < arrayResult2[l]) result= arrayResult2[l];
         }
-
         return result;
     }
 }
