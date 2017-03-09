@@ -58,112 +58,73 @@ public class XXOO {
         return moves.get(cell);
     }
 
-    public Move getMove( ) {
+    public Move getMove() {
         return turn;
     }
 
     public void makeTurn(int x, int y) {
         if (x < 0 || x >= width || y < 0 || y >= hight) throw new IllegalArgumentException();
-        for (x = 0; x < width; x++) {
-            for (y = 0; y < hight; y++) {
                 Cell cell = new Cell(x, y);
                 moves.put(cell, turn);
                 turn = turn.opposite();
-            }
-        }
     }
 
 
     public void clearCell(int x, int y) {
         if (x < 0 || x >= width || y < 0 || y >= hight) throw new IllegalArgumentException();
-        for (x = 0; x < width; x++) {
-            for (y = 0; y < hight; y++) {
                 Cell cell = new Cell(x, y);
                 if (moves.containsKey(cell)) {
                     moves.remove(cell, turn);
                 }
-            }
-        }
+
     }
 
 
-    public int theLongestLine() {
-        int result = 0;
+    public void theLongestLine(Move move) {
         int x = 0;
-        Move move = Move.X;
+        int y = 0;
+        int count;
+        int num = 0;
         while (x < width) {  //ищу самую длинную последовательность в строчках
-            int count = 0;
-            for (int y = 0; y < hight - 1; y++) {
+            count = 0;
+            for (y = 0; y < hight ; y++) {
                 Cell cell = new Cell(x, y);
-                Cell next = new Cell(x, y + 1);
-                if (move.equals(get(cell)) && move.equals(get(next))) count++;
-                if (move.equals(get(cell)) && !move.equals(get(next))) {
-                    if (count + 1 > result) result = count + 1;
-                    count = 0;
-                }
-                if (!move.equals(get(cell)) && move.equals(get(next))) {
-                    count = 1;
-                }
+                if (move.equals(get(x, y))) count++;
+                if (count == width) num = x + 1;
             }
-            Cell last = new Cell(x, hight - 1);
-            if (move.equals(get(last)))
-                count++;
-            if (count > result) result = count;
+            if (count == width) System.out.println("победа в "+ num +" строке");
             x++;
         }
 
-        int y = 0;
+        y = 0;
         while (y < hight) { // ищу самую длинную последовательность в столбцах
-            int count = 0;
-            for (x = 0; x < width - 1; x++) {
+            count = 0;
+            for (x = 0; x < width ; x++) {
                 Cell cell = new Cell(x, y);
-                Cell next = new Cell(x + 1, y);
-                if (move.equals(get(cell)) && move.equals(get(next)))
-                    count++;
-                if (move.equals(get(cell)) && !move.equals(get(next))) {
-                    if (count + 1 > result) result = count + 1;
-                    count = 0;
-                }
-                if (!move.equals(get(cell)) && move.equals(get(next))) {
-                    count = 0;
-                }
+                if (move.equals(get(x, y))) count++;
+                if (count == width) num = y + 1;
             }
-            Cell last = new Cell(width - 1, y);
-            if (move.equals(get(last)))
-                count++;
-            if (count > result) result = count;
+            if (count == width)  System.out.println("победа в " + num + " столбце");
             y++;
         }
-        /*
-        int[] arrayResult1;
-        arrayResult1 = new int[width - 1];
-        for (int l = 0; l < width; l++) { //поиска по побочным диагоналям выше основной побочной диагонали
-            for (int i = 0; i <= l; i++) {
-                Cell cell = new Cell(x, y);
-                if (move.equals(get(i, l - 1)) && move.equals(get(i + 1, l))) arrayResult1[l] += 1;
-                if (move.equals(get(i, l - 1)) && !move.equals(get(i + 1, l))) {
-                    if (result < arrayResult1[l] + 1) result = arrayResult1[l] + 1;
-                    arrayResult1[l] = 0;
-                }
-                if (!move.equals(get(i, l - 1)) && move.equals(get(i + 1, l))) arrayResult1[l] = 0;
-            }
-            if(result < arrayResult1[l]) result= arrayResult1[l];
+
+        count = 0; //ищу победу в главной диагонали
+        for (x = 0; x < width; x++) {
+            y = x;
+            Cell cell = new Cell(x, y);
+            if (move.equals(get(x, y))) count++;
         }
-        int[] arrayResult2;
-        arrayResult2 = new int[width - 1];
-        for (int l = width; l < 2*width - 1; l++) { //поиска по побочным диагоналям ниже основной побочной диагонали
-            for (int j = width - 1; j > l - width; j--) {
-                Cell cell = new Cell(x, y);
-                if (move.equals(get(l - j, j)) && move.equals(get(l - j + 1, j - 1))) arrayResult2[l] += 1;
-                if (move.equals(get(l - j, j)) && !move.equals(get(l - j + 1, j - 1))) {
-                    if (result < arrayResult2[l] + 1) result = arrayResult2[l] + 1;
-                    arrayResult2[l] = 0;
-                }
-                if (!move.equals(get(l - j, j)) && move.equals(get(l - j + 1, j - 1))) arrayResult2[l] = 0;
-            }
-            if(result < arrayResult2[l]) result= arrayResult2[l];
+        if (count == width)
+            System.out.println("победа по главной диагонали");
+
+        count = 0; //ищу победу в побочной диагонали
+        for (x = 0; x < width; x++) {
+            y = width - 1 - x;
+            Cell cell = new Cell(x, y);
+            if (move.equals(get(x, y))) count++;
         }
-        */
-        return result;
+        if (count == width)
+            System.out.println("победа по побочной диагонали");
+
     }
 }
