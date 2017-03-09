@@ -23,8 +23,8 @@ public class Tests {
         field.makeTurn(0, 2);
         field.makeTurn(2, 1);
         field.theLongestLine(X);
-        field.clearCell(2, 1);
-        assertEquals(null, field.get(2, 1));
+        field.makeTurn(0,1);
+        field.theLongestLine(O);
 
     }
 }
