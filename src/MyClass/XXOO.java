@@ -73,9 +73,7 @@ public class XXOO {
     public void clearCell(int x, int y) {
         if (x < 0 || x >= width || y < 0 || y >= hight) throw new IllegalArgumentException();
         Cell cell = new Cell(x, y);
-        if (moves.containsKey(cell)) {
-            moves.remove(cell, turn);
-        }
+        moves.put(cell, null);
     }
 
     private void VictoryInRow(Move move) {
@@ -108,7 +106,7 @@ public class XXOO {
         }
     }
 
-    private void VictoryinMaInDiagonal(Move move) {
+    private void VictoryInMainDiagonal(Move move) {
         int count = 0;
         for (int x = 0; x < width; x++) {
             int y = x;
@@ -133,7 +131,7 @@ public class XXOO {
     public void theLongestLine(Move move) {
         VictoryInRow(move);
         VictoryInColumn(move);
-        VictoryinMaInDiagonal(move);
+        VictoryInMainDiagonal(move);
         VictotyInSecondaryDiagonal(move);
     }
 }
