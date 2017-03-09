@@ -133,5 +133,6 @@ public class XXOO {
         VictoryInColumn(move);
         VictoryInMainDiagonal(move);
         VictotyInSecondaryDiagonal(move);
+
     }
 }

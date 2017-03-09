@@ -25,5 +25,6 @@ public class Tests {
         field.theLongestLine(X);
         field.clearCell(2, 1);
         assertEquals(null, field.get(2, 1));
+
     }
 }
