@@ -58,7 +58,7 @@ public class XXOO {
         return moves.get(cell);
     }
 
-    public Move getMove(Move x) {
+    public Move getMove( ) {
         return turn;
     }
 
@@ -87,21 +87,21 @@ public class XXOO {
     }
 
 
-    public int theLongestLine(Move move) {
+    public int theLongestLine() {
         int result = 0;
         int x = 0;
+        Move move = Move.X;
         while (x < width) {  //ищу самую длинную последовательность в строчках
             int count = 0;
             for (int y = 0; y < hight - 1; y++) {
                 Cell cell = new Cell(x, y);
                 Cell next = new Cell(x, y + 1);
-                if (move.equals(get(cell)) && move.equals(get(next)))
-                    count++;
-                if (move.equals(get(cell)) && !move.equals(get(cell))) {
+                if (move.equals(get(cell)) && move.equals(get(next))) count++;
+                if (move.equals(get(cell)) && !move.equals(get(next))) {
                     if (count + 1 > result) result = count + 1;
                     count = 0;
                 }
-                if (!move.equals(get(cell)) && move.equals(get(cell))) {
+                if (!move.equals(get(cell)) && move.equals(get(next))) {
                     count = 1;
                 }
             }
@@ -111,6 +111,7 @@ public class XXOO {
             if (count > result) result = count;
             x++;
         }
+
         int y = 0;
         while (y < hight) { // ищу самую длинную последовательность в столбцах
             int count = 0;
@@ -119,11 +120,11 @@ public class XXOO {
                 Cell next = new Cell(x + 1, y);
                 if (move.equals(get(cell)) && move.equals(get(next)))
                     count++;
-                if (move.equals(get(cell)) && !move.equals(get(cell))) {
+                if (move.equals(get(cell)) && !move.equals(get(next))) {
                     if (count + 1 > result) result = count + 1;
                     count = 0;
                 }
-                if (!move.equals(get(cell)) && move.equals(get(cell))) {
+                if (!move.equals(get(cell)) && move.equals(get(next))) {
                     count = 0;
                 }
             }
@@ -133,6 +134,7 @@ public class XXOO {
             if (count > result) result = count;
             y++;
         }
+        /*
         int[] arrayResult1;
         arrayResult1 = new int[width - 1];
         for (int l = 0; l < width; l++) { //поиска по побочным диагоналям выше основной побочной диагонали
@@ -161,6 +163,7 @@ public class XXOO {
             }
             if(result < arrayResult2[l]) result= arrayResult2[l];
         }
+        */
         return result;
     }
 }
