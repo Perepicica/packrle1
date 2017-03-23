@@ -177,8 +177,6 @@ public final class XXOO {
     }
 //получаю номер ячейки, которую потом в основной программе преобразую в координаты клетки
     private void Turn() {
-        int x = 0;
-        int y = 0;
         int flag;
         Scanner in = new Scanner(System.in);
         String Flag = in.nextLine();
