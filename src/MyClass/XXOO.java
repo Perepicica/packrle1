@@ -2,6 +2,7 @@ package MyClass;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public final class XXOO {
 
@@ -17,6 +18,8 @@ public final class XXOO {
     private final int height;
     private final Map<Cell, Move> moves = new HashMap<>();
     private Move turn = Move.X;
+    private String player1;
+    private String player2;
 
     public XXOO(int width, int height) {
         assert (width > 0);
@@ -67,26 +70,22 @@ public final class XXOO {
     public void makeTurn(int x, int y) {
         Cell cell = new Cell(x, y);
         if (Move.X.equals(get(x, y)) || Move.O.equals(get(x, y)))
-            System.out.println("Эта ячейка уже занята, попробуйте другую!");
-        if (x < 0 || x >= width)
-            System.out.println("x должен быть не меньше 0 и не больше " + width);
-        if (y < 0 || y >= height)
-            System.out.println("у должен быть не меньше 0 и не больше " + height);
+            throw new IllegalArgumentException("Эта ячейка уже занята, попробуйте другую!");
+        if (x < 0 || x >= width) throw new IllegalArgumentException("x должен быть не меньше 0 и не больше " + width);
+        if (y < 0 || y >= height) throw new IllegalArgumentException("у должен быть не меньше 0 и не больше " + height);
         moves.put(cell, turn);
         theLongestLine(turn);
         turn = turn.opposite();
     }
 
     public void clearCell(int x, int y) {
-        if (x < 0 || x >= width)
-            System.out.println("x должен быть не меньше 0 и не больше " + width);
-        if (y < 0 || y >= height)
-            System.out.println("у должен быть не меньше 0 и не больше " + height);
+        if (x < 0 || x >= width) throw new IllegalArgumentException("x должен быть не меньше 0 и не больше " + width);
+        if (y < 0 || y >= height) throw new IllegalArgumentException("у должен быть не меньше 0 и не больше " + height);
         Cell cell = new Cell(x, y);
         moves.put(cell, null);
     }
 
-    public void theLongestLine(Move move) {
+    public String theLongestLine(Move move) {
         int winner = 0;
         //ищу победителя в строчках
         int x = 0;
@@ -111,7 +110,7 @@ public final class XXOO {
             y++;
         }
         //ищу победителя в главной диагонали
-        count = 0;
+        int count = 0;
         for (x = 0; x < width; x++) {
             y = x;
             Cell cell = new Cell(x, y);
@@ -126,23 +125,65 @@ public final class XXOO {
             if (move.equals(get(x, y))) count++;
         }
         if (count == width) winner++;
-        if (winner > 0 && move.equals(Move.X)) System.out.println("Победил 1 игрок ");
-        if (winner > 0 && move.equals(Move.O)) System.out.println("Победил 2 игрок ");
+        if (winner > 0 && move.equals(Move.X)) return player1;
+        if (winner > 0 && move.equals(Move.O)) return player2;
+        return "";
     }
 
     @Override
     public String toString() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                    System.out.print(get(x,y)+ " ");
+                return get(x, y) + " ";
             }
-            System.out.println(" ");
+            return "/n";
         }
-        return "";
+        return null;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj instanceof XXOO) {
+            XXOO xxoo = (XXOO) obj;
+            if (width == xxoo.width && height == xxoo.height) {
+                for (int x = 0; x < width; x++) {
+                    for (int y = 0; y < height; y++) {
+                        return get(x, y) == xxoo.get(x, y);
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = width;
+        result = 17 * result + height;
+        return result;
+    }
+
+    // ввод имён игроков, не знаю, если надо
+    private void name(int player) {
+        Scanner in = new Scanner(System.in);
+        String Name = in.nextLine();
+        if (Name.isEmpty()) {
+            throw new IllegalArgumentException("Имя не может быть пустым");
+        } else {
+            if (player == 1) player1 = Name;
+            if (player == 2) player2 = Name;
+        }
+    }
+//получаю номер ячейки, которую потом в основной программе преобразую в координаты клетки
+    private void Turn() {
+        int x = 0;
+        int y = 0;
+        int flag;
+        Scanner in = new Scanner(System.in);
+        String Flag = in.nextLine();
+        flag = Integer.parseInt(Flag);
     }
 }
-
-
-//equals
-//hashcode
-//toString
+//если я правильно понимаю, та часть программы, где мы выводим поле, правила игры, предлагаем ввести свои имена и сделать ход,
+// она не здесь должна быть, а потом в основной программе будет, тут только методы вводов
