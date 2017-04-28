@@ -10,13 +10,13 @@ import java.io.IOException;
 
 public class PackrleLauncher {
     @Option(name = "-z", required = true, usage = "Упаковывает файл")
-    private String Packing;
+    private boolean encoding;
     @Option(name = "-u", required = true, usage = "Распаковывает файл")
-    private String Unpacking;
-    @Option(name = "-out", usage = "Имя выходного файла")
-    private String OutputFileName;
+    private boolean decoding;
+    @Option(name = "-out", required = true, usage = "Имя выходного файла")
+    private String outputFileName;
     @Argument(required = true, usage = "Имя входного файла")
-    private String InputFileName;
+    private String inputFileName;
 
     public static void main(String[] args) {
         new PackrleLauncher().launch(args);
@@ -32,12 +32,22 @@ public class PackrleLauncher {
             parser.printUsage(System.err);
             return;
         }
-        Packrle pack = new Packrle(Packing, Unpacking);
-        try {
-            int result = pack.packrle(InputFileName, OutputFileName);
-            System.out.println("Total of " + result + "symbols recoded");
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
+        Packrle rle = new Packrle(inputFileName, outputFileName);
+        if (encoding) {
+            try {
+                rle.encoding();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (decoding) {
+            try {
+                rle.decoding();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.err.println("There is no such option");
+            System.exit(0);
         }
     }
 }
