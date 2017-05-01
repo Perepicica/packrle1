@@ -34,6 +34,7 @@ public class TestsPart2 {
         assertEquals("-4Ahuf", PackRLE.encode("AAAAhuf"));
         assertEquals("-4A-3hj", PackRLE.encode("AAAAhhhj"));
         assertEquals("-9S-9SS", PackRLE.encode("SSSSSSSSSSSSSSSSSSS"));
+        assertEquals("-4x", PackRLE.encode("-4x"));
     }
     @Test
     public void decode() {
