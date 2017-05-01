@@ -15,7 +15,7 @@ public class TestsPart2 {
     public void encoding() throws IOException {
         String input = "C:\\Users\\Gangsta\\IdeaProjects\\untitled\\src\\MyClass\\input";
         String output = "C:\\Users\\Gangsta\\IdeaProjects\\untitled\\src\\MyClass\\output";
-        Packrle rle = new Packrle(input, output);
+        PackRLE rle = new PackRLE(input, output);
         rle.encoding();
     }
 
@@ -23,22 +23,24 @@ public class TestsPart2 {
     public void decoding() throws IOException {
         String input = "C:\\Users\\Gangsta\\IdeaProjects\\untitled\\src\\MyClass\\input2";
         String output = "C:\\Users\\Gangsta\\IdeaProjects\\untitled\\src\\MyClass\\output2";
-        Packrle rle = new Packrle(input, output);
+        PackRLE rle = new PackRLE(input, output);
         rle.decoding();
     }
 
     @Test
     public void encode() {
-        assertEquals("-4A", Packrle.encode("AAAA"));
-        assertEquals("1d-4A", Packrle.encode("1dAAAA"));
-        assertEquals("-4Ahuf", Packrle.encode("AAAAhuf"));
-        assertEquals("-4A-3hj", Packrle.encode("AAAAhhhj"));
+        assertEquals("-4A", PackRLE.encode("AAAA"));
+        assertEquals("1d-4A", PackRLE.encode("1dAAAA"));
+        assertEquals("-4Ahuf", PackRLE.encode("AAAAhuf"));
+        assertEquals("-4A-3hj", PackRLE.encode("AAAAhhhj"));
+        assertEquals("-9S-9SS", PackRLE.encode("SSSSSSSSSSSSSSSSSSS"));
     }
     @Test
     public void decode() {
-        assertEquals("AAAA", Packrle.decode("-4A"));
-        assertEquals("1dAAAA", Packrle.decode("1d-4A"));
-        assertEquals("AAAAhuf", Packrle.decode("-4Ahuf"));
-        assertEquals("AAAAhhhj", Packrle.decode("-4A-3hj"));
+        assertEquals("AAAA", PackRLE.decode("-4A"));
+        assertEquals("1dAAAA", PackRLE.decode("1d-4A"));
+        assertEquals("AAAAhuf", PackRLE.decode("-4Ahuf"));
+        assertEquals("AAAAhhhj", PackRLE.decode("-4A-3hj"));
+        assertEquals("xxxx", PackRLE.decode("-4x"));
     }
 }

@@ -8,7 +8,7 @@ import org.kohsuke.args4j.Option;
 import java.io.IOException;
 
 
-public class PackrleLauncher {
+public class PackRLELauncher {
     @Option(name = "-z", required = true, usage = "Упаковывает файл")
     private boolean encoding;
     @Option(name = "-u", required = true, usage = "Распаковывает файл")
@@ -19,7 +19,7 @@ public class PackrleLauncher {
     private String inputFileName;
 
     public static void main(String[] args) {
-        new PackrleLauncher().launch(args);
+        new PackRLELauncher().launch(args);
     }
 
     private void launch(String[] args) {
@@ -32,7 +32,7 @@ public class PackrleLauncher {
             parser.printUsage(System.err);
             return;
         }
-        Packrle rle = new Packrle(inputFileName, outputFileName);
+        PackRLE rle = new PackRLE(inputFileName, outputFileName);
         if (encoding) {
             try {
                 rle.encoding();

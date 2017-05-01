@@ -4,11 +4,11 @@ import java.io.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-public class Packrle {
+public class PackRLE {
     private final String setInput;
     private final String setOutput;
 
-    public Packrle(String setInput, String setOutput) {
+    public PackRLE(String setInput, String setOutput) {
         this.setInput = setInput;
         if (setOutput == null) {
             this.setOutput = setOutput + ".out";
@@ -52,12 +52,29 @@ public class Packrle {
                     i++;
                 }
                 if (runLength >= 3) {
-                    out.append("-");
-                    out.append(runLength);
-                    out.append(str.charAt(i));
+                    if (runLength > 9) {
+                        while (runLength > 9 && runLength > 2) {
+                            out.append("-");
+                            out.append("9");
+                            out.append(str.charAt(i));
+                            runLength = runLength - 9;
+                        }
+                    }
+                    if (runLength < 3) {
+                        if (runLength == 2) {
+                            out.append(str.charAt(i));
+                            out.append(str.charAt(i));
+                        } else out.append(str.charAt(i));
+                    } else {
+                        out.append("-");
+                        out.append(runLength);
+                        out.append(str.charAt(i));
+                    }
                 } else {
-                    out.append(str.charAt(i));
-                    out.append(str.charAt(i));
+                    if (runLength == 2) {
+                        out.append(str.charAt(i));
+                        out.append(str.charAt(i));
+                    } else out.append(str.charAt(i));
                 }
                 if (i + 1 == str.length() - 1) out.append(str.charAt(i + 1));
             }
@@ -69,7 +86,7 @@ public class Packrle {
         StringBuffer out = new StringBuffer();
         for (int i = 0; i < str.length(); i++) {
             if (str.charAt(i) == '-') {
-                int l = str.charAt(i+1) - '0';
+                int l = str.charAt(i + 1) - '0';
                 while (l > 0) {
                     out.append(str.charAt(i + 2));
                     l--;
