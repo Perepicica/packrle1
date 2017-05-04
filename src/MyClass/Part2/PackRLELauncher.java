@@ -1,4 +1,4 @@
-package MyClass;
+package MyClass.Part2;
 
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineException;
@@ -9,11 +9,11 @@ import java.io.IOException;
 
 
 public class PackRLELauncher {
-    @Option(name = "-z", required = true, usage = "Упаковывает файл")
+    @Option(name = "-z", usage = "Упаковывает файл")
     private boolean encoding;
-    @Option(name = "-u", required = true, usage = "Распаковывает файл")
+    @Option(name = "-u", usage = "Распаковывает файл", forbids = {"-z"})
     private boolean decoding;
-    @Option(name = "-out", required = true, usage = "Имя выходного файла")
+    @Option(name = "-out", usage = "Имя выходного файла")
     private String outputFileName;
     @Argument(required = true, usage = "Имя входного файла")
     private String inputFileName;

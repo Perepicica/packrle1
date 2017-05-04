@@ -1,12 +1,9 @@
-package MyClass;
+package MyClass.Part2;
 
+import MyClass.Part2.PackRLE;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
@@ -34,12 +31,12 @@ public class TestsPart2 {
         assertEquals("-4Ahuf", PackRLE.encode("AAAAhuf"));
         assertEquals("-4A-3hj", PackRLE.encode("AAAAhhhj"));
         assertEquals("-9S-9SS", PackRLE.encode("SSSSSSSSSSSSSSSSSSS"));
-        assertEquals("-4x", PackRLE.encode("-4x"));
+        assertEquals("-4x", PackRLE.encode("-4x")); 
     }
     @Test
     public void decode() {
-        assertEquals("AAAA", PackRLE.decode("-4A"));
-        assertEquals("1dAAAA", PackRLE.decode("1d-4A"));
+        assertEquals("AAAA-4", PackRLE.decode("-4A-4"));
+        assertEquals("1dAAAAd", PackRLE.decode("1d-4Ad"));
         assertEquals("AAAAhuf", PackRLE.decode("-4Ahuf"));
         assertEquals("AAAAhhhj", PackRLE.decode("-4A-3hj"));
         assertEquals("xxxx", PackRLE.decode("-4x"));

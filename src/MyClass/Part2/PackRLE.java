@@ -1,25 +1,23 @@
-package MyClass;
+package MyClass.Part2;
 
 import java.io.*;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 public class PackRLE {
-    private final String setInput;
-    private final String setOutput;
+    private final File fileInput;
+    private final File fileOutput;
 
     public PackRLE(String setInput, String setOutput) {
-        this.setInput = setInput;
+        this.fileInput = new File(setInput);
         if (setOutput == null) {
-            this.setOutput = setOutput + ".out";
+            this.fileOutput = new File("out" + this.fileInput.getName());
         } else {
-            this.setOutput = setOutput;
+            this.fileOutput = new File(setOutput);
         }
     }
 
     public void encoding() throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(setInput))) {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(setOutput))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileInput))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileOutput))) {
                 String str;
                 while ((str = reader.readLine()) != null) {
                     writer.write(encode(str));
@@ -29,8 +27,8 @@ public class PackRLE {
     }
 
     public void decoding() throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(setInput))) {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(setOutput))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileInput))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileOutput))) {
                 String str;
                 while ((str = reader.readLine()) != null) {
                     writer.write(decode(str));
@@ -51,31 +49,25 @@ public class PackRLE {
                     runLength++;
                     i++;
                 }
-                if (runLength >= 3) {
-                    if (runLength > 9) {
-                        while (runLength > 9 && runLength > 2) {
-                            out.append("-");
-                            out.append("9");
-                            out.append(str.charAt(i));
-                            runLength = runLength - 9;
-                        }
-                    }
-                    if (runLength < 3) {
-                        if (runLength == 2) {
-                            out.append(str.charAt(i));
-                            out.append(str.charAt(i));
-                        } else out.append(str.charAt(i));
-                    } else {
+                if (runLength > 9) {
+                    while (runLength > 9) {
                         out.append("-");
-                        out.append(runLength);
+                        out.append("9");
                         out.append(str.charAt(i));
+                        runLength = runLength - 9;
                     }
-                } else {
+                }
+                if (runLength < 3) {
                     if (runLength == 2) {
                         out.append(str.charAt(i));
                         out.append(str.charAt(i));
                     } else out.append(str.charAt(i));
+                } else {
+                    out.append("-");
+                    out.append(runLength);
+                    out.append(str.charAt(i));
                 }
+
                 if (i + 1 == str.length() - 1) out.append(str.charAt(i + 1));
             }
         }
@@ -84,9 +76,11 @@ public class PackRLE {
 
     public static String decode(String str) {
         StringBuffer out = new StringBuffer();
-        for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == '-') {
+        int last =0;
+        for (int i = 0; i < str.length() -2; i++) {
+            if (str.charAt(i) == '-' & i < str.length()- 2 & str.charAt(i + 1) >= '0' & str.charAt(i + 1) <= '9') {
                 int l = str.charAt(i + 1) - '0';
+                last = i;
                 while (l > 0) {
                     out.append(str.charAt(i + 2));
                     l--;
@@ -94,6 +88,11 @@ public class PackRLE {
                 i = i + 2;
             } else out.append(str.charAt(i));
         }
+        if (last < str.length()-4){
+            out.append(str.charAt(str.length()-2));
+            out.append(str.charAt(str.length()-1));
+        }
+        if (last == str.length()-4) out.append(str.charAt(str.length()-1));
         return out.toString();
     }
 }
