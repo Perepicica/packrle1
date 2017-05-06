@@ -30,6 +30,7 @@ public final class XXOO {
     private String player1;
     private String player2;
 
+
     public XXOO(int width, int height, String player1, String player2) {
         this.width = width;
         this.height = height;
@@ -44,6 +45,8 @@ public final class XXOO {
         private Cell(int x, int y) {
             this.x = x;
             this.y = y;
+            assert (x > 0);
+            assert (y > 0);
         }
 
         @Override
