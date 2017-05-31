@@ -3,23 +3,34 @@ package MyClass.Part2;
 import MyClass.Part2.PackRLE;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TestsPart2 {
     @Test
     public void encoding() throws IOException {
-        String input = "C:\\Users\\Gangsta\\IdeaProjects\\untitled\\src\\MyClass\\input";
-        String output = "C:\\Users\\Gangsta\\IdeaProjects\\untitled\\src\\MyClass\\output";
+        String input = "src\\MyClass\\input";
+        String output = "src\\MyClass\\output";
         PackRLE rle = new PackRLE(input, output);
         rle.encoding();
+    }
+    @Test
+    public void encoding2() throws IOException {
+        String input = "src\\MyClass\\input";
+        PackRLE rle = new PackRLE(input, null);
+        rle.encoding();
+        File file = new File("outinput");
+        assertTrue(file.isFile());
+        file.delete();
     }
 
     @Test
     public void decoding() throws IOException {
-        String input = "C:\\Users\\Gangsta\\IdeaProjects\\untitled\\src\\MyClass\\input2";
-        String output = "C:\\Users\\Gangsta\\IdeaProjects\\untitled\\src\\MyClass\\output2";
+        String input = "src\\MyClass\\input2";
+        String output = "src\\MyClass\\output2";
         PackRLE rle = new PackRLE(input, output);
         rle.decoding();
     }
